@@ -1,40 +1,43 @@
+using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float jumpForce = 7f;
+    public float moveSpeed = 10f;
+    public float jumpForce = 5f;
     public float gravityScale = 1f;
-    public GameObject referenceHologram;
+    public Transform hologram;
 
     private Rigidbody rb;
-    private Vector3 gravityDirection = Vector3.down;
     private bool isGrounded;
+    private Vector3 moveDirection;
+    private Vector3 gravityDirection = Vector3.down;
     private bool isFalling;
     private Vector3 lastPosition;
     Animator anim;
+    public GameObject gameOverPanel;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Physics.gravity = gravityDirection * gravityScale;
         lastPosition = transform.position;
         anim = GetComponent<Animator>();
     }
 
     void Update()
     {
-        HandleMovement();
-        HandleJumping();
-        HandleGravityManipulation();
-        HandleHologram();
+        Move();
+        Jump();
+        GravityManipulation();
         ApplyGravity();
         CheckFalling();
         FaceMovementDirection();
+        AlignWithGravity();
     }
 
-    void HandleMovement()
+    void Move()
     {
         float moveHorizontal = Input.GetAxis("Horizontal"); // A, D keys
         float moveVertical = Input.GetAxis("Vertical"); // W, S keys
@@ -52,59 +55,39 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void HandleJumping()
+    void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 
-    void HandleGravityManipulation()
+    void GravityManipulation()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            gravityDirection = Vector3.forward;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            gravityDirection = Vector3.back;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            gravityDirection = Vector3.left;
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            gravityDirection = Vector3.right;
-        }
+        Vector3 newGravityDirection = gravityDirection;
+
+        if (Input.GetKey(KeyCode.UpArrow)) newGravityDirection = Vector3.up;
+        if (Input.GetKey(KeyCode.DownArrow)) newGravityDirection = Vector3.back;
+        if (Input.GetKey(KeyCode.LeftArrow)) newGravityDirection = Vector3.left;
+        if (Input.GetKey(KeyCode.RightArrow)) newGravityDirection = Vector3.right;
+
+        // Display hologram in direction
+        hologram.position = transform.position + newGravityDirection * 2;
+        hologram.rotation = Quaternion.LookRotation(newGravityDirection);
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            Physics.gravity = gravityDirection * gravityScale;
+            gravityDirection = newGravityDirection; 
         }
+
+        rb.AddForce(gravityDirection * gravityScale, ForceMode.Acceleration);
     }
 
-    void HandleHologram()
+    void AlignWithGravity()
     {
-        if (referenceHologram != null)
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow) ||
-                Input.GetKeyDown(KeyCode.DownArrow) ||
-                Input.GetKeyDown(KeyCode.LeftArrow) ||
-                Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                referenceHologram.SetActive(true);
-                referenceHologram.transform.position = transform.position + gravityDirection * 2;
-            }
-            else if (Input.GetKeyUp(KeyCode.UpArrow) ||
-                     Input.GetKeyUp(KeyCode.DownArrow) ||
-                     Input.GetKeyUp(KeyCode.LeftArrow) ||
-                     Input.GetKeyUp(KeyCode.RightArrow))
-            {
-                referenceHologram.SetActive(false);
-            }
-        }
+        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, -gravityDirection) * transform.rotation;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
     }
 
     void ApplyGravity()
@@ -114,18 +97,20 @@ public class CharacterController : MonoBehaviour
 
     void CheckFalling()
     {
-        if (!isGrounded && rb.velocity.magnitude > 1f)
+        if (!isGrounded && rb.velocity.magnitude > 10f)
         {
             isFalling = true;
+            anim.SetBool("IsFalling", true);
         }
         else
         {
             isFalling = false;
+            anim.SetBool("IsFalling", false);
+            //Debug.Log("grounded!");
         }
 
         if (isFalling && transform.position.y < lastPosition.y)
         {
-            anim.SetBool("IsFalling", true);
             // Player is falling and no longer in contact with the ground
             GameOver();
         }
@@ -146,11 +131,18 @@ public class CharacterController : MonoBehaviour
 
     void GameOver()
     {
-        Debug.Log("Game Over!");
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);  
+        StartCoroutine("Reset");
         // Implement your game over logic here
         // For example, stop the game or reload the scene
         // You can use UnityEngine.SceneManagement to reload the scene
+    }
+
+    IEnumerator Reset()
+    {
+        yield return new WaitForSeconds(4f);
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0f;
+        Debug.Log("Game Over!");
     }
 
     void OnCollisionEnter(Collision collision)
@@ -158,6 +150,13 @@ public class CharacterController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            isFalling = false ;
+        }
+
+        if(collision.gameObject.tag == "goal")
+        {
+            Debug.Log("collected");
+            collision.gameObject.SetActive(false);
         }
     }
 
