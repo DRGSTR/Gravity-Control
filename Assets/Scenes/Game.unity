@@ -1080,7 +1080,6 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1155,13 +1154,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.04640909, y: 0, z: 0, w: 0.9989225}
-  m_LocalPosition: {x: 2.219163, y: 3.1637983, z: -2.5961254}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.13225642, y: -0, z: -0, w: 0.9912156}
+  m_LocalPosition: {x: 0.13874517, y: 2.1540496, z: -1.5197802}
+  m_LocalScale: {x: 0.7637086, y: 0.7538798, z: 0.7629743}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_Father: {fileID: 543450653259175915}
+  m_LocalEulerAnglesHint: {x: 15.2, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1206,26 +1205,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!114 &330585548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87a08851c6803244da3e412c0d9182df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 543450653259175915}
-  distance: 5
-  height: 2
-  rotationSpeed: 5
-  sensitivityX: 4
-  sensitivityY: 2
-  minYAngle: -20
-  maxYAngle: 60
 --- !u!1 &332856813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1568,7 +1547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &401391402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3189,7 +3168,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &843424668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7744,6 +7723,7 @@ Transform:
   - {fileID: 9012584597696256345}
   - {fileID: 1674257186921248195}
   - {fileID: 5465940246962763647}
+  - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &546209300877281314
@@ -7853,7 +7833,6 @@ GameObject:
   - component: {fileID: 919132149603880274}
   - component: {fileID: 919132149603880277}
   - component: {fileID: 919132149603880278}
-  - component: {fileID: 919132149603880279}
   m_Layer: 0
   m_Name: Exo Gray
   m_TagString: Untagged
@@ -7898,7 +7877,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &919132149603880276
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7959,73 +7938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2d07012f78f664caac332476595d5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &919132149603880279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132149603880273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a43c4232e3f2c94a9623dcc4c9e8c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xAxis:
-    Value: 0
-    m_SpeedMode: 0
-    m_MaxSpeed: 300
-    m_AccelTime: 0
-    m_DecelTime: 0
-    m_InputAxisName: Mouse X
-    m_InputAxisValue: 0
-    m_InvertInput: 0
-    m_MinValue: -180
-    m_MaxValue: 180
-    m_Wrap: 1
-    m_Recentering:
-      m_enabled: 0
-      m_WaitTime: 0
-      m_RecenteringTime: 0
-      m_LastUpdateTime: 0
-      mLastAxisInputTime: 0
-      mRecenteringVelocity: 0
-      m_LegacyHeadingDefinition: 0
-      m_LegacyVelocityFilterStrength: 0
-    m_CurrentSpeed: 0
-    m_LastUpdateTime: 0
-    m_LastUpdateFrame: 0
-    m_InputAxisIndex: 0
-    <ValueRangeLocked>k__BackingField: 0
-    <HasRecentering>k__BackingField: 0
-  yAxis:
-    Value: 0
-    m_SpeedMode: 0
-    m_MaxSpeed: 300
-    m_AccelTime: 0
-    m_DecelTime: 0
-    m_InputAxisName: Mouse Y
-    m_InputAxisValue: 0
-    m_InvertInput: 0
-    m_MinValue: -60
-    m_MaxValue: 60
-    m_Wrap: 0
-    m_Recentering:
-      m_enabled: 0
-      m_WaitTime: 0
-      m_RecenteringTime: 0
-      m_LastUpdateTime: 0
-      mLastAxisInputTime: 0
-      mRecenteringVelocity: 0
-      m_LegacyHeadingDefinition: 0
-      m_LegacyVelocityFilterStrength: 0
-    m_CurrentSpeed: 0
-    m_LastUpdateTime: 0
-    m_LastUpdateFrame: 0
-    m_InputAxisIndex: 0
-    <ValueRangeLocked>k__BackingField: 0
-    <HasRecentering>k__BackingField: 0
-  camFollowPos: {fileID: 0}
 --- !u!1 &927016744737343624
 GameObject:
   m_ObjectHideFlags: 0
@@ -12960,7 +12872,6 @@ GameObject:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 330585546}
   - {fileID: 543450653259175915}
   - {fileID: 410087041}
   - {fileID: 832575519}
