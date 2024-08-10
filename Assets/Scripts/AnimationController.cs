@@ -22,4 +22,4 @@ public class AnimationController: MonoBehaviour
             anim.SetBool("Run", false);
         }
     }
-}
+} //class

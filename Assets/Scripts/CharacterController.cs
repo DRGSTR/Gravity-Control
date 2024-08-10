@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class CharacterController : MonoBehaviour
 {
     public float moveSpeed = 10f;
-    public float jumpForce = 5f;
+    public float jumpForce = 7f;
     public float gravityScale = 1f;
     public Transform hologram;
 
@@ -14,10 +14,12 @@ public class CharacterController : MonoBehaviour
     private bool isGrounded;
     private Vector3 moveDirection;
     private Vector3 gravityDirection = Vector3.down;
-    private bool isFalling;
     private Vector3 lastPosition;
     Animator anim;
-    public GameObject gameOverPanel;
+
+    private int count = 0;
+    
+    public GameObject winPanel;
 
     void Start()
     {
@@ -32,7 +34,6 @@ public class CharacterController : MonoBehaviour
         Jump();
         GravityManipulation();
         ApplyGravity();
-        CheckFalling();
         FaceMovementDirection();
         AlignWithGravity();
     }
@@ -47,12 +48,12 @@ public class CharacterController : MonoBehaviour
         // Move the player
         rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
 
-        // Change direction based on movement
-        if (movement.magnitude > 0.1f)
-        {
-            Quaternion newRotation = Quaternion.LookRotation(movement);
-            rb.MoveRotation(newRotation);
-        }
+        //// Change direction based on movement
+        //if (movement.magnitude > 0.1f)
+        //{
+        //    Quaternion newRotation = Quaternion.LookRotation(movement);
+        //    transform.rotation = newRotation;
+        //}
     }
 
     void Jump()
@@ -95,29 +96,6 @@ public class CharacterController : MonoBehaviour
         rb.AddForce(gravityDirection * gravityScale * Physics.gravity.magnitude, ForceMode.Acceleration);
     }
 
-    void CheckFalling()
-    {
-        if (!isGrounded && rb.velocity.magnitude > 10f)
-        {
-            isFalling = true;
-            anim.SetBool("IsFalling", true);
-        }
-        else
-        {
-            isFalling = false;
-            anim.SetBool("IsFalling", false);
-            //Debug.Log("grounded!");
-        }
-
-        if (isFalling && transform.position.y < lastPosition.y)
-        {
-            // Player is falling and no longer in contact with the ground
-            GameOver();
-        }
-
-        lastPosition = transform.position;
-    }
-
     void FaceMovementDirection()
     {
         Vector3 movementDirection = rb.velocity;
@@ -129,34 +107,24 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void GameOver()
-    {
-        StartCoroutine("Reset");
-        // Implement your game over logic here
-        // For example, stop the game or reload the scene
-        // You can use UnityEngine.SceneManagement to reload the scene
-    }
-
-    IEnumerator Reset()
-    {
-        yield return new WaitForSeconds(4f);
-        gameOverPanel.SetActive(true);
-        Time.timeScale = 0f;
-        Debug.Log("Game Over!");
-    }
-
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("goal"))
         {
-            isGrounded = true;
-            isFalling = false ;
+            Debug.Log("Collected");
+            count += 1;
+            Debug.Log(count);
+            collision.gameObject.SetActive(false);
+
+            if(count == 5)
+            {
+                winPanel.SetActive(true);
+            }
         }
 
-        if(collision.gameObject.tag == "goal")
+        if(collision.gameObject.CompareTag("Ground"))
         {
-            Debug.Log("collected");
-            collision.gameObject.SetActive(false);
+            isGrounded = true;
         }
     }
 
@@ -167,4 +135,4 @@ public class CharacterController : MonoBehaviour
             isGrounded = false;
         }
     }
-}
+} //class

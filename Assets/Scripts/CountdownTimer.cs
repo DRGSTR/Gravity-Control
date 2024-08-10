@@ -64,4 +64,4 @@ public class CountdownTimer : MonoBehaviour
         // Method to manually stop the timer
         timerIsRunning = false;
     }
-}
+} //class
