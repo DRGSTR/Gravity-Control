@@ -69,7 +69,7 @@ public class CharacterController : MonoBehaviour
         Vector3 newGravityDirection = gravityDirection;
 
         if (Input.GetKey(KeyCode.UpArrow)) newGravityDirection = Vector3.up;
-        if (Input.GetKey(KeyCode.DownArrow)) newGravityDirection = Vector3.back;
+        if (Input.GetKey(KeyCode.DownArrow)) newGravityDirection = Vector3.down;
         if (Input.GetKey(KeyCode.LeftArrow)) newGravityDirection = Vector3.left;
         if (Input.GetKey(KeyCode.RightArrow)) newGravityDirection = Vector3.right;
 
