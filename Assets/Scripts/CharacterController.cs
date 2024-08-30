@@ -9,6 +9,7 @@ public class CharacterController : MonoBehaviour
     public float jumpForce = 7f;
     public float gravityScale = 1f;
     public Transform hologram;
+    public LayerMask groundMask; // LayerMask to detect ground
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -37,6 +38,14 @@ public class CharacterController : MonoBehaviour
         Vector3 moveDirection = transform.right * moveX + transform.forward * moveZ;
         rb.MovePosition(transform.position + moveDirection * moveSpeed * Time.deltaTime);
 
+        // Change direction based on movement
+        //if (moveDirection.magnitude > 0.1f)
+        //{
+        //    Quaternion newRotation = Quaternion.LookRotation(moveDirection);
+        //    transform.rotation = newRotation;
+        //    CheckGrounded();
+        //}  causes issues with player falling through the ground even after checking for ground.
+
         // Jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -53,7 +62,7 @@ public class CharacterController : MonoBehaviour
         Vector3 newGravityDirection = gravityDirection;
 
         if (Input.GetKey(KeyCode.UpArrow)) newGravityDirection = Vector3.up;
-        if (Input.GetKey(KeyCode.DownArrow)) newGravityDirection = Vector3.back;
+        if (Input.GetKey(KeyCode.DownArrow)) newGravityDirection = Vector3.down;
         if (Input.GetKey(KeyCode.LeftArrow)) newGravityDirection = Vector3.left;
         if (Input.GetKey(KeyCode.RightArrow)) newGravityDirection = Vector3.right;
 
@@ -80,6 +89,22 @@ public class CharacterController : MonoBehaviour
         rb.AddForce(gravityDirection * gravityScale * Physics.gravity.magnitude, ForceMode.Acceleration);
     }
 
+    void CheckGrounded()
+    {
+        // Check if the character is grounded
+        Ray ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 0.2f, groundMask))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("goal"))
@@ -92,6 +117,7 @@ public class CharacterController : MonoBehaviour
             if(count == 5)
             {
                 winPanel.SetActive(true);
+                Time.timeScale = 0f;
             }
         }
 

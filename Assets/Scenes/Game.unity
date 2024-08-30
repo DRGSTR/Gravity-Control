@@ -834,7 +834,7 @@ GameObject:
   - component: {fileID: 194506414}
   - component: {fileID: 194506413}
   - component: {fileID: 194506412}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -3480,7 +3480,7 @@ GameObject:
   - component: {fileID: 780541854}
   - component: {fileID: 780541853}
   - component: {fileID: 780541852}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (4)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -4266,7 +4266,7 @@ GameObject:
   - component: {fileID: 967953314}
   - component: {fileID: 967953313}
   - component: {fileID: 967953312}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (6)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -5286,7 +5286,7 @@ GameObject:
   - component: {fileID: 1151311463}
   - component: {fileID: 1151311462}
   - component: {fileID: 1151311461}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (5)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -5658,7 +5658,7 @@ GameObject:
   - component: {fileID: 1233293754}
   - component: {fileID: 1233293753}
   - component: {fileID: 1233293752}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (2)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -7417,7 +7417,7 @@ Transform:
   m_GameObject: {fileID: 1628940703}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.641, y: 0.23, z: 0.17}
+  m_LocalPosition: {x: -1.641, y: 0, z: 0.17}
   m_LocalScale: {x: 1.3094, y: 1.3277316, z: 1.3094}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7444,7 +7444,7 @@ GameObject:
   - component: {fileID: 1645246338}
   - component: {fileID: 1645246337}
   - component: {fileID: 1645246336}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -8202,7 +8202,7 @@ GameObject:
   - component: {fileID: 1893096423}
   - component: {fileID: 1893096422}
   - component: {fileID: 1893096421}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (7)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -8340,7 +8340,7 @@ GameObject:
   - component: {fileID: 1934019762}
   - component: {fileID: 1934019761}
   - component: {fileID: 1934019760}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (3)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -9052,7 +9052,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1, y: 0, z: 0.17}
-  m_LocalScale: {x: 1.3094, y: 1.3277316, z: 1.3094}
+  m_LocalScale: {x: 1.3094, y: 1.327732, z: 1.3094}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 330585546}
@@ -9198,6 +9198,9 @@ MonoBehaviour:
   jumpForce: 10
   gravityScale: 1
   hologram: {fileID: 1628940704}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
   winPanel: {fileID: 2134033782}
 --- !u!65 &919132149603880275
 BoxCollider:
