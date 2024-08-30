@@ -30,38 +30,22 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Jump();
-        GravityManipulation();
-        ApplyGravity();
-        FaceMovementDirection();
-        AlignWithGravity();
-    }
+        // Movement
+        float moveX = Input.GetAxis("Horizontal"); // A and D keys
+        float moveZ = Input.GetAxis("Vertical");   // W and S keys
 
-    void Move()
-    {
-        float moveHorizontal = Input.GetAxis("Horizontal"); // A, D keys
-        float moveVertical = Input.GetAxis("Vertical"); // W, S keys
+        Vector3 moveDirection = transform.right * moveX + transform.forward * moveZ;
+        rb.MovePosition(transform.position + moveDirection * moveSpeed * Time.deltaTime);
 
-        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical).normalized;
-
-        // Move the player
-        rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
-
-        //// Change direction based on movement
-        //if (movement.magnitude > 0.1f)
-        //{
-        //    Quaternion newRotation = Quaternion.LookRotation(movement);
-        //    transform.rotation = newRotation;
-        //}
-    }
-
-    void Jump()
-    {
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        // Jumping
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+        
+        GravityManipulation();
+        ApplyGravity();
+        AlignWithGravity();
     }
 
     void GravityManipulation()
@@ -69,7 +53,7 @@ public class CharacterController : MonoBehaviour
         Vector3 newGravityDirection = gravityDirection;
 
         if (Input.GetKey(KeyCode.UpArrow)) newGravityDirection = Vector3.up;
-        if (Input.GetKey(KeyCode.DownArrow)) newGravityDirection = Vector3.down;
+        if (Input.GetKey(KeyCode.DownArrow)) newGravityDirection = Vector3.back;
         if (Input.GetKey(KeyCode.LeftArrow)) newGravityDirection = Vector3.left;
         if (Input.GetKey(KeyCode.RightArrow)) newGravityDirection = Vector3.right;
 
@@ -79,7 +63,7 @@ public class CharacterController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            gravityDirection = newGravityDirection; 
+            gravityDirection = newGravityDirection;
         }
 
         rb.AddForce(gravityDirection * gravityScale, ForceMode.Acceleration);
@@ -94,17 +78,6 @@ public class CharacterController : MonoBehaviour
     void ApplyGravity()
     {
         rb.AddForce(gravityDirection * gravityScale * Physics.gravity.magnitude, ForceMode.Acceleration);
-    }
-
-    void FaceMovementDirection()
-    {
-        Vector3 movementDirection = rb.velocity;
-
-        if (movementDirection.magnitude > 0.1f) // Only rotate if there is movement
-        {
-            Quaternion newRotation = Quaternion.LookRotation(movementDirection);
-            rb.MoveRotation(newRotation);
-        }
     }
 
     void OnCollisionEnter(Collision collision)

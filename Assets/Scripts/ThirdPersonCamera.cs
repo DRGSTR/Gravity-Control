@@ -1,35 +1,41 @@
 using UnityEngine;
 
-public class ThirdPersonCamera : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
-    public Transform target; // The target the camera will follow (usually the player)
- 
-    public float rotationSpeed = 5.0f; // Speed of camera rotation
+    public Transform player;         // Reference to the player character
+    public Vector3 offset;           // Offset from the player character
+    public float mouseSensitivity = 10f; // Sensitivity of the mouse movement
+    public float smoothSpeed = 0.125f;   // Smoothness of the camera movement
 
-    private float currentX = 0.0f;
-    private float currentY = 0.0f;
-    public float sensitivityX = 4.0f;
-    public float sensitivityY = 2.0f;
+    private float pitch = 0f;        // Vertical rotation angle
+    private float yaw = 0f;          // Horizontal rotation angle
 
-    public float minYAngle = -20f;
-    public float maxYAngle = 60f;
-
-    void Update()
+    void Start()
     {
-        // Get mouse input for camera rotation
-        currentX += Input.GetAxis("Mouse X") * sensitivityX;
-        currentY -= Input.GetAxis("Mouse Y") * sensitivityY;
-
-        // Clamp the vertical rotation
-        currentY = Mathf.Clamp(currentY, minYAngle, maxYAngle);
+        // Initialize the camera's position relative to the player
+        transform.position = player.position + offset;
     }
 
     void LateUpdate()
     {
-        if (target != null)
-        {
-            // Calculate the desired camera position
-            Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
-        }
+        // Get mouse input
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        // Update yaw and pitch based on mouse input
+        yaw += mouseX;
+        pitch -= mouseY;
+        pitch = Mathf.Clamp(pitch, -89f, 89f); // Clamp pitch to prevent flipping
+
+        // Calculate the new rotation
+        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
+
+        // Apply the rotation to the camera
+        transform.rotation = rotation;
+
+        // Update the camera's position
+        Vector3 desiredPosition = player.position + offset;
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothedPosition;
     }
 } // class
