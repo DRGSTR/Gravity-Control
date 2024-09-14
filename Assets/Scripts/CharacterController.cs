@@ -39,12 +39,12 @@ public class CharacterController : MonoBehaviour
         rb.MovePosition(transform.position + moveDirection * moveSpeed * Time.deltaTime);
 
         // Change direction based on movement
-        //if (moveDirection.magnitude > 0.1f)
-        //{
-        //    Quaternion newRotation = Quaternion.LookRotation(moveDirection);
-        //    transform.rotation = newRotation;
-        //    CheckGrounded();
-        //}  causes issues with player falling through the ground even after checking for ground.
+        if (moveDirection.magnitude > 0.1f)
+        {
+            Quaternion newRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = newRotation;
+            CheckGrounded();
+        }  //causes issues with player falling through the ground even after checking for ground.
 
         // Jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
